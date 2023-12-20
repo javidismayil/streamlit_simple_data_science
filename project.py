@@ -463,7 +463,7 @@ if page=='Load Dataset':
         if 'Build Model'==analyzing:
             build_model(raw_data)
 elif page=='Explore Ready Dataset':
-    datasets=st.radio('Choose Dataset',('Iris', 'Boston', 'Breast Cancer', 'Wine'))
+    datasets=st.radio('Choose Dataset',('Iris', 'Breast Cancer', 'Wine'))
 
     if datasets == 'Iris':
         from sklearn.datasets import load_iris
