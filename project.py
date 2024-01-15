@@ -40,7 +40,8 @@ st.markdown(
         <h3 style='color: white; font-weight: bold;'>About this code:</h3>
         <p style='color: white;'>This Streamlit app provides functionalities for loading datasets, exploring data, 
         performing exploratory data analysis (EDA), and building machine learning models. Customize and extend 
-        the code to meet your specific needs.</p>
+        the code to meet your specific needs.
+        You can utilize a pre-existing dataset in the application or upload your own dataset. </p>
     </div>
     """,
     unsafe_allow_html=True
@@ -428,11 +429,16 @@ def build_model(raw_data):
             ####Classification function begining
             cll_reg=st.radio('Choose Classification or Regression', ('None','Classification', 'Regression'))
             if cll_reg=='Classification':
-                xt_yt=train_test(x_y[0], x_y[1], cll_reg)
-                X_train, X_test, y_train, y_test=xt_yt[0], xt_yt[1], xt_yt[2], xt_yt[3]
-                scaled_data=scale(X_train,X_test)
-                X_train_std, X_test_std=scaled_data[0], scaled_data[1]
-                classifer(X_train_std, X_test_std, y_train, y_test)
+                is_integer = np.all(x_y[1].astype(int) ==x_y[1])
+                unique_values, counts = np.unique(x_y[1], return_counts=True)
+                if is_integer and  len(unique_values) < 20:
+                    xt_yt=train_test(x_y[0], x_y[1], cll_reg)
+                    X_train, X_test, y_train, y_test=xt_yt[0], xt_yt[1], xt_yt[2], xt_yt[3]
+                    scaled_data=scale(X_train,X_test)
+                    X_train_std, X_test_std=scaled_data[0], scaled_data[1]
+                    classifer(X_train_std, X_test_std, y_train, y_test)
+                else:
+                    st.title("The target values you selected contain continuous values, resulting in the creation of too many classes. Please make sure you have chosen the correct target variable.")
             elif cll_reg=='Regression':
                 st.title('The project is in the process of development')
             else:
